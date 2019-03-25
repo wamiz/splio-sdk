@@ -22,9 +22,9 @@ class Services
     {
         $this->config = $config;
 
-        $this->_initDataService($config['data'], $config['domain']);
-        $this->_initTriggerService($config['trigger'], $config['domain']);
-        $this->_initLaunchService($config['launch'], $config['domain']);
+        $this->_initDataService($config['data'], $config['domain'], $config['universe']);
+        $this->_initTriggerService($config['trigger'], $config['domain'], $config['universe']);
+        $this->_initLaunchService($config['launch'], $config['domain'], $config['universe']);
     }
 
     /**
@@ -63,9 +63,10 @@ class Services
      * @param array  $config
      * @param string $domain
      */
-    protected function _initDataService($config, $domain)
+    protected function _initDataService($config, $domain, $universe)
     {
         $config['domain'] = $domain;
+        $config['universe'] = $universe;
 
         $dataService = new DataService($config);
 
@@ -78,9 +79,10 @@ class Services
      * @param array  $config
      * @param string $domain
      */
-    protected function _initTriggerService($config, $domain)
+    protected function _initTriggerService($config, $domain, $universe)
     {
         $config['domain'] = $domain;
+        $config['universe'] = $universe;
 
         $triggerService = new TriggerService($config);
 
@@ -93,9 +95,10 @@ class Services
      * @param array  $config
      * @param string $domain
      */
-    protected function _initLaunchService($config, $domain)
+    protected function _initLaunchService($config, $domain, $universe)
     {
         $config['domain'] = $domain;
+        $config['universe'] = $universe;
 
         $launchService = new LaunchService($config);
 

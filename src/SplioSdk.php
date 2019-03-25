@@ -20,7 +20,7 @@ class SplioSdk
      *
      * @param array $config Array containing API keys to connect to Splio
      *                      $params = array(
-     *                      'domain'    => 'https://s3s.fr'
+     *                      'domain'    => 's3s.fr'
      *                      'universe'  => $universe (provided by Splio)
      *                      'data'   => array(
      *                      'version' =>  $version | API version (1.9)

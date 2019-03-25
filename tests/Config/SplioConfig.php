@@ -13,6 +13,7 @@ trait SplioConfig
     {
         return [
             'domain' => $_ENV['SPLIO_DOMAIN'],
+            'universe' => $_ENV['SPLIO_UNIVERSE'],
             'data' => [
                 'key' => $_ENV['SPLIO_DATA_KEY'],
                 'version' => $_ENV['SPLIO_DATA_VERSION'],
