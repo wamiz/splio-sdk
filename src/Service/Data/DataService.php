@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Service to manage contacts from Splio Data API
+ * 
+ * @author Cédric Rassaert <crassaert@gmail.com>
+ */
 namespace Splio\Service\Data;
 
 use Splio\Exception\SplioSdkException;
@@ -14,6 +18,22 @@ class DataService extends AbstractService
     protected function getPath()
     {
         return 'api/data';
+    }
+
+    /**
+     * Set endpoint for data API
+     *
+     * @return void
+     */
+    private function setEndpoint()
+    {
+        $this->endpoint = 'https://'.
+                          $this->universe.':'.
+                          $this->key.'@'.
+                          $this->baseUrl.'/'.
+                          $this->path.'/'.
+                          ($this->version ? $this->version : '')
+                        ;
     }
 
     /**

@@ -31,7 +31,7 @@ PHP wrapper for Splio CRM and router.
 
 ## Data API
 
-###Access to data API :
+### Access to data API :
 
     $dataApi = $sdk->getService()->getData();
 
@@ -48,17 +48,27 @@ PHP wrapper for Splio CRM and router.
 #### getLists()
 Retrieve all lists from the specified universe
 
+----
+
 #### getContact($email)
 Retrieve all infos about the user, including custom fields and subscribed lists.
+
+----
 
 #### createContact($contact)
 Create a contact, see example below
 
+----
+
 #### updateContact($contact)
 Update a contact, you can view contact options on example below.
 
+----
+
 #### deleteContact($email)
 Delete a contact from email address
+
+----
 
 ### Examples :
 

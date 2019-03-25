@@ -20,6 +20,7 @@ abstract class AbstractService
     protected $client;
 
     abstract protected function getPath();
+    abstract protected function setEndpoint();
 
     public function __construct($config)
     {
@@ -30,7 +31,7 @@ abstract class AbstractService
         $this->path = $this->getPath();
         $this->client = new HttpClient();
 
-        $this->_setEndpoint();
+        $this->setEndpoint();
     }
 
     /**
@@ -48,16 +49,5 @@ abstract class AbstractService
         );
 
         return $res;
-    }
-
-    private function _setEndpoint()
-    {
-        $this->endpoint = 'https://'.
-                          $this->universe.':'.
-                          $this->key.'@'.
-                          $this->baseUrl.'/'.
-                          $this->path.'/'.
-                          ($this->version ? $this->version : '')
-                        ;
     }
 }
