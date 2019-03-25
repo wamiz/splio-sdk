@@ -9,7 +9,7 @@ class DataService extends AbstractService
 {
     const API_LIST_ENDPOINT = 'lists';
     const API_CONTACT_ENPOINT = 'contact';
-    const API_BLACKLIST_ENPOINT = 'contact';
+    const API_BLACKLIST_ENPOINT = 'blacklist';
 
     protected function getPath()
     {
@@ -117,24 +117,19 @@ class DataService extends AbstractService
      *
      * @param string $email
      *
-     * @return bool
+     * @return boolean
      */
-    public function isContactBlacklisted($email): boolean
+    public function isContactBlacklisted($email): bool
     {
-        $req = $this->request(self::API_BLACKLIST_ENPOINT.'/'.$email, 'GET');
-        $res = json_decode($res->getBody()->getContents());
-
-        switch ($res['code']) {
-            case 404:
-                return false;
-                break;
-            case 200:
-                return true;
-                break;
-            default:
-                throw new SplioSdkException('Error while checking blacklist : '.
-                    $res->getReasonPhrase(), $res->getStatusCode());
+        try {
+            $req = $this->request(self::API_BLACKLIST_ENPOINT.'/'.$email, 'GET');
         }
+        catch (\Exception $e)
+        {
+            return false;
+        }
+        
+        return true;
     }
 
     /**
@@ -144,9 +139,9 @@ class DataService extends AbstractService
      *
      * @return bool
      */
-    public function addContactToBlacklist($email): boolean
+    public function addContactToBlacklist($email): bool
     {
-        $req = $this->request(self::API_BLACKLIST_ENPOINT.'/'.$email, 'POST');
+        $res = $this->request(self::API_BLACKLIST_ENPOINT.'/'.$email, 'POST');
 
         if (400 <= $res->getStatusCode()) {
             throw new SplioSdkException('Error while adding contact to blacklist : '.

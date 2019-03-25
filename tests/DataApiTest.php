@@ -75,6 +75,18 @@ final class DataApiTest extends TestCase
         $this->assertIsObject($contact);
     }
 
+    public function testContactBlacklist()
+    {
+        $this->sdk->getService()->getData()->addContactToBlacklist($this->fakeUser['email']);
+        $isBlacklisted = $this->sdk->getService()->getData()->isContactBlacklisted($this->fakeUser['email']);
+        $this->assertTrue($isBlacklisted);
+    }
+
+    /**
+     * Delete contact
+     *
+     * @return void
+     */
     public function testContactDelete()
     {
         $result = $this->sdk->getService()->getData()->deleteContact($this->fakeUser['email']);

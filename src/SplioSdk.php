@@ -49,9 +49,9 @@ class SplioSdk
      */
     protected function _initServices()
     {
-        $services = new Services($this->config);
+        $service = new Service($this->config);
 
-        $this->services = $services;
+        $this->service = $service;
     }
 
     /**
@@ -69,8 +69,8 @@ class SplioSdk
      *
      * @return Splio\Service\Service
      */
-    public function getService(): Services
+    public function getService(): Service
     {
-        return $this->services;
+        return $this->service;
     }
 }
