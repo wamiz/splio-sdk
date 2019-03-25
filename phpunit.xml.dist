@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.5/phpunit.xsd" bootstrap="vendor/autoload.php" forceCoversAnnotation="false" beStrictAboutCoversAnnotation="true" beStrictAboutOutputDuringTests="true" beStrictAboutTodoAnnotatedTests="true" verbose="true" colors="true">
+    <testsuite name="default">
+        <directory suffix="Test.php">tests</directory>
+    </testsuite>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+
+    <php>
+        <env name="SPLIO_DATA_KEY" value="YOUR_SPLIO_DATA_KEY"/>
+        <env name="SPLIO_DATA_VERSION" value="1.9"/>
+        <env name="SPLIO_TRIGGER_KEY" value="YOUR_SPLIO_TRIGGER_KEY"/>
+        <env name="SPLIO_TRIGGER_VERSION" value="1.9"/>
+        <env name="SPLIO_LAUNCH_KEY" value="YOUR_SPLIO_LAUNCH_KEY"/>
+        <env name="SPLIO_LAUNCH_VERSION" value="1.9"/>
+        <env name="SPLIO_UNIVERSE" value="YOUR_UNIVERSE"/>
+        <env name="SPLIO_DOMAIN" value="https://s3s.fr"/>
+    </php>
+</phpunit>
