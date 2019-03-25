@@ -1,9 +1,9 @@
 <?php
 
-namespace Splio\Services\Data;
+namespace Splio\Service\Data;
 
 use Splio\Exception\SplioSdkException;
-use Splio\Services\AbstractService;
+use Splio\Service\AbstractService;
 
 class DataService extends AbstractService
 {
@@ -36,14 +36,17 @@ class DataService extends AbstractService
     /**
      * Create a contact.
      *
-     * @param array $contact
-     *                       [
-     *                       email (mandatory),
-     *                       firstname,
-     *                       lastname,
-     *                       fields: [[id => 0, name => 'birthdate', value => '2000-01-01']...],
-     *                       lists: [[id => 0], [id => 1]...]
-     *                       ]
+     * @param array $contact {
+     *
+     *   Your new contact
+     *
+     *   @option string email required
+     *   @option string firstname optional
+     *   @option string lastname optional
+     *   @option array fields [[id => 0, name => 'birthdate', value => '2000-01-01']...]
+     *   @option array lists [[id => 0], [id => 1]...]
+     * 
+     * }
      *
      * @return object
      */
@@ -110,7 +113,7 @@ class DataService extends AbstractService
     }
 
     /**
-     * Check if the specified contact is in the blacklist or not
+     * Check if the specified contact is in the blacklist or not.
      *
      * @param string $email
      *
@@ -135,10 +138,11 @@ class DataService extends AbstractService
     }
 
     /**
-     * Add a contact to blacklist
+     * Add a contact to blacklist.
      *
      * @param string $email
-     * @return boolean
+     *
+     * @return bool
      */
     public function addContactToBlacklist($email): boolean
     {

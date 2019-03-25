@@ -1,7 +1,7 @@
 <?php
-namespace Splio\Services\Trigger;
+namespace Splio\Service\Trigger;
 
-use Splio\Services\AbstractService;
+use Splio\Service\AbstractService;
 
 class TriggerService extends AbstractService
 {

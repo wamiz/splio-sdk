@@ -8,7 +8,7 @@
 
 namespace Splio;
 
-use Splio\Services\Services;
+use Splio\Service\Service;
 
 class SplioSdk
 {
@@ -18,23 +18,25 @@ class SplioSdk
     /**
      * Setting up Splio configuration.
      *
-     * @param array $config Array containing API keys to connect to Splio
-     *                      $params = array(
-     *                      'domain'    => 's3s.fr'
-     *                      'universe'  => $universe (provided by Splio)
-     *                      'data'   => array(
+     * @param array $config {
+     * 
+     * Array containing API keys to connect to Splio
+     * 
+     *   @option string 'domain'    's3s.fr'
+     *   @option string 'universe'  Universe provided by Splio
+     *   @option array  'data'   => array(
      *                      'version' =>  $version | API version (1.9)
      *                      'key'     =>  $apiKey Specify data API key
      *                      )
-     *                      'trigger'     => array(
+     *   @option array  'trigger'     => array(
      *                      'version' =>  $version | API version (1.9)
      *                      'key'     =>  $apiKey Specify trigger API key
      *                      )
-     *                      'launch'      => array(
+     *   @option array  'launch'      => array(
      *                      'version' =>  $version | API version (1.9)
      *                      'key'     =>  $apiKey Specify launch API key
      *                      )
-     *                      )
+     * }
      */
     public function __construct($config = [])
     {
@@ -65,9 +67,9 @@ class SplioSdk
     /**
      * Get all services.
      *
-     * @return Splio\Services\Services
+     * @return Splio\Service\Service
      */
-    public function getServices(): Services
+    public function getService(): Services
     {
         return $this->services;
     }

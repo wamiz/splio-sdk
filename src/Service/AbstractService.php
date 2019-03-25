@@ -3,7 +3,7 @@
  * Define base services.
  */
 
-namespace Splio\Services;
+namespace Splio\Service;
 
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;

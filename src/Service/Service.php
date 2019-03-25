@@ -5,13 +5,13 @@
  * @author Cédric Rassaert <crassaert@gmail.com>
  */
 
-namespace Splio\Services;
+namespace Splio\Service;
 
-use Splio\Services\Data\DataService;
-use Splio\Services\Launch\LaunchService;
-use Splio\Services\Trigger\TriggerService;
+use Splio\Service\Data\DataService;
+use Splio\Service\Launch\LaunchService;
+use Splio\Service\Trigger\TriggerService;
 
-class Services
+class Service
 {
     protected $data;
     protected $trigger;
@@ -30,7 +30,7 @@ class Services
     /**
      * Return data service.
      *
-     * @return Splio\Services\DataService
+     * @return Splio\Service\DataService
      */
     public function getData()
     {
@@ -40,7 +40,7 @@ class Services
     /**
      * Return trigger service.
      *
-     * @return Splio\Services\TriggerService
+     * @return Splio\Service\TriggerService
      */
     public function getTrigger()
     {
@@ -50,7 +50,7 @@ class Services
     /**
      * Return launch service.
      *
-     * @return Splio\Services\LaunchService
+     * @return Splio\Service\LaunchService
      */
     public function getLaunch()
     {

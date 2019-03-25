@@ -38,7 +38,7 @@ final class DataApiTest extends TestCase
      */
     public function testLists()
     {
-        $lists = $this->sdk->getServices()->getData()->getLists();
+        $lists = $this->sdk->getService()->getData()->getLists();
 
         $this->assertIsObject($lists);
     }
@@ -48,7 +48,7 @@ final class DataApiTest extends TestCase
      */
     public function testContactCreation()
     {
-        $contact = $this->sdk->getServices()->getData()->createContact($this->fakeUser);
+        $contact = $this->sdk->getService()->getData()->createContact($this->fakeUser);
 
         $this->assertIsObject($contact);
     }
@@ -58,7 +58,7 @@ final class DataApiTest extends TestCase
      */
     public function testContactInfos()
     {
-        $contact = $this->sdk->getServices()->getData()->getContact($this->fakeUser['email']);
+        $contact = $this->sdk->getService()->getData()->getContact($this->fakeUser['email']);
 
         $this->assertIsObject($contact);
     }
@@ -70,14 +70,14 @@ final class DataApiTest extends TestCase
      */
     public function testContactUpdate()
     {
-        $contact = $this->sdk->getServices()->getData()->updateContact($this->fakeUser);
+        $contact = $this->sdk->getService()->getData()->updateContact($this->fakeUser);
 
         $this->assertIsObject($contact);
     }
 
     public function testContactDelete()
     {
-        $result = $this->sdk->getServices()->getData()->deleteContact($this->fakeUser['email']);
+        $result = $this->sdk->getService()->getData()->deleteContact($this->fakeUser['email']);
         $this->assertTrue($result);
     }
 }

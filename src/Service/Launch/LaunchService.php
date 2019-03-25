@@ -1,7 +1,7 @@
 <?php
-namespace Splio\Services\Launch;
+namespace Splio\Service\Launch;
 
-use Splio\Services\AbstractService;
+use Splio\Service\AbstractService;
 
 class LaunchService extends AbstractService
 {
