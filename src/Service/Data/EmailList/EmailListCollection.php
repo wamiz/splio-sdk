@@ -36,9 +36,16 @@ class EmailListCollection extends \ArrayObject implements SplioSerializeInterfac
         );
     }
 
-    public static function jsonUnserialize(object $data): self
+    public static function jsonUnserialize(string $response): self
     {
+        $data = \json_decode($response);
+
         $res = new self();
+
+        foreach ($data->lists as $item)
+        {
+            $res->append(EmailList::jsonUnserialize(json_encode($item)));
+        }
 
         return $res;
     }

@@ -8,9 +8,11 @@
 namespace Splio\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Splio\Service\Data\Contact\Contact;
+use Splio\Service\Data\CustomField\CustomField;
+use Splio\Service\Data\EmailList\EmailList;
 use Splio\SplioSdk;
 use Splio\Tests\Config\SplioConfig;
-use Splio\Service\Data\Contact\Contact;
 
 /**
  * Data API class tester.
@@ -25,13 +27,7 @@ final class DataApiTest extends TestCase
     protected function setUp(): void
     {
         $this->sdk = new SplioSdk($this->buildConfig());
-
-        $fakeUser = new Contact();
-        $fakeUser->setEmail('fake@wamiz.com');
-        $fakeUser->setFirstname('Fake fn');
-        $fakeUser->setLastname('Fake ln');
-        
-        $this->fakeUser = $fakeUser;
+        $this->initFakeUser();
     }
 
     public function testContactJsonSerialize()
@@ -62,7 +58,7 @@ final class DataApiTest extends TestCase
     }
 
     /**
-     * Get created contact
+     * Get created contact.
      */
     public function testContactInfos()
     {
@@ -72,9 +68,7 @@ final class DataApiTest extends TestCase
     }
 
     /**
-     * Update single contact
-     *
-     * @return void
+     * Update single contact.
      */
     public function testContactUpdate()
     {
@@ -91,13 +85,49 @@ final class DataApiTest extends TestCase
     }
 
     /**
-     * Delete contact
-     *
-     * @return void
+     * Delete contact.
      */
     public function testContactDelete()
     {
         $result = $this->sdk->getService()->getData()->deleteContact($this->fakeUser->getEmail());
         $this->assertTrue($result);
+    }
+
+    /**
+     * Returns random list in the universe.
+     *
+     * @return EmailList
+     */
+    private function getRandomList(): EmailList
+    {
+        $lists = $this->sdk->getService()->getData()->getLists();
+
+        $count = $lists->count();
+        $rand = rand(0, ($count - 1));
+        $return = false;
+
+        foreach ($lists as $key => $list) {
+            if ($key === $rand) {
+                $return = $list;
+            }
+        }
+
+        return $return;
+    }
+
+    private function initFakeUser()
+    {
+        $fakeUser = new Contact();
+        $fakeUser->setEmail('fake@wamiz.com');
+        $fakeUser->setFirstname('Fake fn');
+        $fakeUser->setLastname('Fake ln');
+
+        $customField = new CustomField();
+        $customField->setId(0);
+        $customField->setValue(42);
+        $fakeUser->addCustomField($customField);
+        $fakeUser->addEmailList($this->getRandomList());
+
+        $this->fakeUser = $fakeUser;
     }
 }

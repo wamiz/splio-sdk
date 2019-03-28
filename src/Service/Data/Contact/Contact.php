@@ -105,7 +105,7 @@ class Contact implements SplioSerializeInterface
     {
         $this->lang = $lang;
 
-        return $lang;
+        return $this;
     }
 
     /**
@@ -191,14 +191,42 @@ class Contact implements SplioSerializeInterface
      *
      * @return self
      */
-    public static function jsonUnserialize(object $data): self
+    public static function jsonUnserialize(string $response): self
     {
+        $data = \json_decode($response);
+
         $res = new self();
         $res->setEmail($data->email);
-        $res->setFirstname($data->firstname);
-        $res->setLastname($data->lastname);
-        $res->setLang($data->lang);
-        $res->setId($data->id);
+
+        if (\property_exists($data, 'firstname')) {
+            $res->setFirstname($data->firstname);
+        }
+        if (\property_exists($data, 'cellphone')) {
+            $res->setCellphone($data->cellphone);
+        }
+        if (\property_exists($data, 'lastname')) {
+            $res->setLastname($data->lastname);
+        }
+
+        if (\property_exists($data, 'lang')) {
+            $res->setLang($data->lang);
+        }
+
+        if (\property_exists($data, 'id')) {
+            $res->setId($data->id);
+        }
+
+        if (\property_exists($data, 'lists')) {
+            foreach ($data->lists as $list) {
+                $res->addEmailList(EmailList::jsonUnserialize(json_encode($list)));
+            }
+        }
+
+        if (\property_exists($data, 'fields')) {
+            foreach ($data->fields as $field) {
+                $res->addCustomField(CustomField::jsonUnserialize(json_encode($field)));
+            }
+        }
 
         return $res;
     }

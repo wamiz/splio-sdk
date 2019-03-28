@@ -49,12 +49,17 @@ class EmailList implements SplioSerializeInterface
      */
     public function jsonSerialize(): array
     {
-        return \array_filter(['id' => $this->id, 'name' => $this->name]);
+        return \array_filter(['id' => $this->id, 'name' => $this->name],
+          function ($item) { return false !== $item ? true : false; });
     }
-    
-    public static function jsonUnserialize(object $data): self
+
+    public static function jsonUnserialize(string $response): self
     {
+        $data = \json_decode($response);
+
         $res = new self();
+        $res->setId($data->id);
+        $res->setName($data->name);
 
         return $res;
     }

@@ -66,12 +66,18 @@ class CustomField implements SplioSerializeInterface
             'id' => $this->id,
             'name' => $this->name,
             'value' => $this->value,
-        ]);
+        ], function ($item) { return false !== $item ? true : false; });
     }
-    
-    public static function jsonUnserialize(object $data): self
+
+    public static function jsonUnserialize(string $response): self
     {
+        $data = \json_decode($response);
+
         $res = new self();
+
+        $res->setId($data->id);
+        $res->setName($data->name);
+        $res->setValue($data->value);
 
         return $res;
     }

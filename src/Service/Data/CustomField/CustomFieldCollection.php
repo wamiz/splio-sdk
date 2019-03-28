@@ -29,16 +29,24 @@ class CustomFieldCollection extends \ArrayObject implements SplioSerializeInterf
 
     public function jsonSerialize(): array
     {
-        return \array_map(
+        $res = \array_map(
             function ($item) {
                 return $item->jsonSerialize();
             }, $this->getArrayCopy()
         );
+
+        return $res;
     }
-    
-    public static function jsonUnserialize(object $data): self
+
+    public static function jsonUnserialize(string $response): self
     {
+        $data = \json_decode($response);
+
         $res = new self();
+
+        foreach ($data->fields as $item) {
+            $res->append(CustomField::jsonUnserialize(json_encode($item)));
+        }
 
         return $res;
     }

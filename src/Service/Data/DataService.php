@@ -10,6 +10,7 @@ namespace Splio\Service\Data;
 use Splio\Exception\SplioSdkException;
 use Splio\Service\AbstractService;
 use Splio\Service\Data\Contact\Contact;
+use Splio\Service\Data\EmailList\EmailListCollection;
 
 class DataService extends AbstractService
 {
@@ -41,7 +42,7 @@ class DataService extends AbstractService
      *
      * @return array
      */
-    public function getLists(): object
+    public function getLists(): EmailListCollection
     {
         $res = $this->request(self::API_LIST_ENDPOINT, 'GET');
 
@@ -50,7 +51,7 @@ class DataService extends AbstractService
                 $res->getReasonPhrase(), $res->getStatusCode());
         }
 
-        return json_decode($res->getBody()->getContents());
+        return EmailListCollection::jsonUnserialize($res->getBody()->getContents());
     }
 
     /**
@@ -58,26 +59,28 @@ class DataService extends AbstractService
      *
      * @param Contact $contact
      *
-     * @return object
+     * @return Contact
      */
-    public function createContact(Contact $contact)
+    public function createContact(Contact $contact): Contact
     {
         $res = $this->request(self::API_CONTACT_ENPOINT, 'POST', $contact->jsonSerialize());
-        
+
         if (400 <= $res->getStatusCode()) {
             throw new SplioSdkException('Error '.$res->getStatusCode().
             ' while creating contact : '.$res->getReasonPhrase(), $res->getStatusCode());
         }
 
-        return json_decode($res->getBody()->getContents());
+        return $this->getContact($contact->getEmail());
     }
 
     /**
      * Update a contact.
      *
      * @param Contact $contact
+     *
+     * @return Contact
      */
-    public function updateContact(Contact $contact)
+    public function updateContact(Contact $contact): Contact
     {
         $res = $this->request(self::API_CONTACT_ENPOINT.'/'.$contact->getEmail(), 'PUT', $contact->jsonSerialize());
 
@@ -85,7 +88,7 @@ class DataService extends AbstractService
             throw new SplioSdkException('Error while updating contact : '.$res->getReasonPhrase(), $res->getStatusCode());
         }
 
-        return json_decode($res->getBody()->getContents());
+        return $this->getContact($contact->getEmail());
     }
 
     /**
@@ -110,8 +113,10 @@ class DataService extends AbstractService
      * Get single contact.
      *
      * @param string $email
+     *
+     * @return Contact
      */
-    public function getContact(string $email)
+    public function getContact(string $email): Contact
     {
         $res = $this->request(self::API_CONTACT_ENPOINT.'/'.$email, 'GET');
 
@@ -119,7 +124,7 @@ class DataService extends AbstractService
             throw new SplioSdkException('Error while updating contact : '.$res->getReasonPhrase(), $res->getStatusCode());
         }
 
-        return json_decode($res->getBody()->getContents());
+        return Contact::jsonUnserialize($res->getBody()->getContents());
     }
 
     /**
