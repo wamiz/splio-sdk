@@ -14,6 +14,16 @@ class EmailList implements SplioSerializeInterface
     private $id = false;
     private $name = false;
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     /**
      * Set list id.
      *

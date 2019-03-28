@@ -31,27 +31,22 @@ class LaunchService extends AbstractService
     /**
      * Set up new campaign from accessible URL.
      *
-     * @param array $params {
-     * @option string $senderemail required
-     * @option string $sendername required
-     * @option string $url required
-     * @option string $list eg: 1,2
-     * @option string $replyto
-     * @option $starttime "yyyy-mm-dd HH:MM:SS"
-     *                      }
+     * @param Message $message
+     *
+     * @return bool
      */
-    public function launchCampaign($params)
+    public function launchCampaign(Message $message): bool
     {
-        $options = \array_merge($this->baseQuery, $params);
+        $options = \array_merge($this->baseQuery, $message->jsonSerialize());
 
-        $res = $this->request(\http_build_query($options), 'GET');
+        $res = $this->request('?'.\http_build_query($options), 'GET');
 
         return \json_decode($res->getBody()->getContents());
     }
 
     protected function getPath()
     {
-        return '/api/launch/nph-13.pl?';
+        return '/api/launch/nph-13.pl';
     }
 
     protected function setEndpoint()

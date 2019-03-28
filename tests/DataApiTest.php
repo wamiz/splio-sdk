@@ -45,6 +45,37 @@ final class DataApiTest extends TestCase
         $lists = $this->sdk->getService()->getData()->getLists();
 
         $this->assertIsObject($lists);
+
+        $ids = [];
+
+        foreach ($lists as $list) {
+            $ids[] = $list->getId();
+        }
+
+        $randomId = \array_rand($ids);
+
+        $list = $lists->retrieveById($randomId);
+
+        $this->assertIsObject($list);
+    }
+
+    public function testFields()
+    {
+        $fields = $this->sdk->getService()->getData()->getFields();
+
+        $this->assertIsObject($fields);
+
+        $ids = [];
+
+        foreach ($fields as $field) {
+            $ids[] = $field->getId();
+        }
+
+        $randomId = \array_rand($ids);
+
+        $field = $fields->retrieveById($randomId);
+
+        $this->assertIsObject($field);
     }
 
     /**

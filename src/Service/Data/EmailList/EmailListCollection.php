@@ -36,14 +36,24 @@ class EmailListCollection extends \ArrayObject implements SplioSerializeInterfac
         );
     }
 
+    public function retrieveById(int $id): EmailList
+    {
+        foreach ($this as $item) {
+            if ($item->getId() == $id) {
+                return $item;
+            }
+        }
+
+        return false;
+    }
+
     public static function jsonUnserialize(string $response): self
     {
         $data = \json_decode($response);
 
         $res = new self();
 
-        foreach ($data->lists as $item)
-        {
+        foreach ($data->lists as $item) {
             $res->append(EmailList::jsonUnserialize(json_encode($item)));
         }
 

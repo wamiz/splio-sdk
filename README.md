@@ -46,7 +46,7 @@ PHP wrapper for Splio CRM and router.
  - addContactToBlacklist
 
 #### getLists()
-Retrieve all lists from the specified universe
+Retrieve all lists from the specified universe. Returns EmailListCollection object.
 
 ----
 
@@ -55,12 +55,12 @@ Retrieve all infos about the user, including custom fields and subscribed lists.
 
 ----
 
-#### createContact($contact)
+#### createContact(Contact $contact)
 Create a contact, see example below
 
 ----
 
-#### updateContact($contact)
+#### updateContact(Contact $contact)
 Update a contact, you can view contact options on example below.
 
 ----
@@ -74,23 +74,32 @@ Delete a contact from email address
 
 #### Add user into contacts
 
-    $contact = [
-	    'email' => 'john@doe.com', // required
-	    'firstname' => 'John', // optional
-	    'lastname' => 'Doe', // optional
-	    'lists' => [
-		    'id' => 0,
-		    'id' => 1
-		    ]
-		 ], // Adding user into our 2 first lists
-	    'fields' => [
-		    'id' => 0,
-		    'name' => 'Best character',
-		    'value' => 'Jaina'
-		 ] // Setting custom fields
-    ];
+    $contact = new Splio\Service\Data\Contact\Contact();
+    
+    $contact->setEmail('john@doe.com'); // required
+    $contact->setFirstname('John'); // optional
+    $contact->setLastname('Doe'); // optional
+    
     $user = $dataApi->createContact($contact);
 
+##### Adding lists to contact
+
+    $lists = $dataSdk->getLists();
+    $list1 = $lists->retrieveById(0);
+    $contact->addEmailList($list1);
+    
+    $list2 = $lists->retrieveById(1);
+    $contact->addEmailList($list2);
+    
+##### Setting custom fields
+
+    $customFields = $dataSdk->getFields();
+    $field1 = $customFields->retrieveById(0);
+    $contact->addCustomField($field1);
+    
+    $field2 = $customFields->retrieveById(1);
+    $contact->addCustomField($field2);
+    
 Here is the output :
 
 ```json

@@ -19,5 +19,7 @@
         <env name="SPLIO_LAUNCH_VERSION" value="1.9"/>
         <env name="SPLIO_UNIVERSE" value="YOUR_UNIVERSE"/>
         <env name="SPLIO_DOMAIN" value="https://s3s.fr"/>
+        <env name="TEST_SENDER_EMAIL" value="your@email.com"/>
+        <env name="TEST_SENDER_URL" value="https://yourwebsite.ext/email.html"/>
     </php>
 </phpunit>

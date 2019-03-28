@@ -10,11 +10,13 @@ namespace Splio\Service\Data;
 use Splio\Exception\SplioSdkException;
 use Splio\Service\AbstractService;
 use Splio\Service\Data\Contact\Contact;
+use Splio\Service\Data\CustomField\CustomFieldCollection;
 use Splio\Service\Data\EmailList\EmailListCollection;
 
 class DataService extends AbstractService
 {
     const API_LIST_ENDPOINT = 'lists';
+    const API_FIELD_ENDPOINT = 'fields';
     const API_CONTACT_ENPOINT = 'contact';
     const API_BLACKLIST_ENPOINT = 'blacklist';
 
@@ -52,6 +54,18 @@ class DataService extends AbstractService
         }
 
         return EmailListCollection::jsonUnserialize($res->getBody()->getContents());
+    }
+
+    public function getFields(): CustomFieldCollection
+    {
+        $res = $this->request(self::API_FIELD_ENDPOINT, 'GET');
+
+        if (200 !== $res->getStatusCode()) {
+            throw new SplioSdkException('Error while fetching fields : '.
+                $res->getReasonPhrase(), $res->getStatusCode());
+        }
+
+        return CustomFieldCollection::jsonUnserialize($res->getBody()->getContents());
     }
 
     /**

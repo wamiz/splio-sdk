@@ -27,6 +27,17 @@ class CustomFieldCollection extends \ArrayObject implements SplioSerializeInterf
         parent::offsetSet($index, $newval);
     }
 
+    public function retrieveById(int $id): CustomField
+    {
+        foreach ($this as $item) {
+            if ($item->getId() == $id) {
+                return $item;
+            }
+        }
+
+        return false;
+    }
+
     public function jsonSerialize(): array
     {
         $res = \array_map(

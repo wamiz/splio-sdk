@@ -15,6 +15,21 @@ class CustomField implements SplioSerializeInterface
     private $name = false;
     private $value = false;
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function value(): string
+    {
+        return $this->value;
+    }
+
     /**
      * Set id.
      *
@@ -75,9 +90,17 @@ class CustomField implements SplioSerializeInterface
 
         $res = new self();
 
-        $res->setId($data->id);
-        $res->setName($data->name);
-        $res->setValue($data->value);
+        if (\property_exists($data, 'id')) {
+            $res->setId($data->id);
+        }
+
+        if (\property_exists($data, 'name')) {
+            $res->setName($data->name);
+        }
+
+        if (\property_exists($data, 'value')) {
+            $res->setValue($data->value);
+        }
 
         return $res;
     }
