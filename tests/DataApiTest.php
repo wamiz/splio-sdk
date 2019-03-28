@@ -10,6 +10,7 @@ namespace Splio\Tests;
 use PHPUnit\Framework\TestCase;
 use Splio\SplioSdk;
 use Splio\Tests\Config\SplioConfig;
+use Splio\Service\Data\Contact\Contact;
 
 /**
  * Data API class tester.
@@ -25,12 +26,19 @@ final class DataApiTest extends TestCase
     {
         $this->sdk = new SplioSdk($this->buildConfig());
 
-        $this->fakeUser = [
-            'email' => 'fake@wamiz.com',
-            'firstname' => 'Fake fn',
-            'lastname' => 'Fake ln',
-            'lists' => ['id' => 0]
-        ];
+        $fakeUser = new Contact();
+        $fakeUser->setEmail('fake@wamiz.com');
+        $fakeUser->setFirstname('Fake fn');
+        $fakeUser->setLastname('Fake ln');
+        
+        $this->fakeUser = $fakeUser;
+    }
+
+    public function testContactJsonSerialize()
+    {
+        $serializedContact = $this->fakeUser->jsonSerialize();
+
+        $this->assertIsArray($serializedContact);
     }
 
     /**
@@ -58,7 +66,7 @@ final class DataApiTest extends TestCase
      */
     public function testContactInfos()
     {
-        $contact = $this->sdk->getService()->getData()->getContact($this->fakeUser['email']);
+        $contact = $this->sdk->getService()->getData()->getContact($this->fakeUser->getEmail());
 
         $this->assertIsObject($contact);
     }
@@ -77,8 +85,8 @@ final class DataApiTest extends TestCase
 
     public function testContactBlacklist()
     {
-        $this->sdk->getService()->getData()->addContactToBlacklist($this->fakeUser['email']);
-        $isBlacklisted = $this->sdk->getService()->getData()->isContactBlacklisted($this->fakeUser['email']);
+        $this->sdk->getService()->getData()->addContactToBlacklist($this->fakeUser->getEmail());
+        $isBlacklisted = $this->sdk->getService()->getData()->isContactBlacklisted($this->fakeUser->getEmail());
         $this->assertTrue($isBlacklisted);
     }
 
@@ -89,7 +97,7 @@ final class DataApiTest extends TestCase
      */
     public function testContactDelete()
     {
-        $result = $this->sdk->getService()->getData()->deleteContact($this->fakeUser['email']);
+        $result = $this->sdk->getService()->getData()->deleteContact($this->fakeUser->getEmail());
         $this->assertTrue($result);
     }
 }

@@ -22,9 +22,9 @@ class Service
     {
         $this->config = $config;
 
-        $this->_initDataService($config['data'], $config['domain'], $config['universe']);
-        $this->_initTriggerService($config['trigger'], $config['domain'], $config['universe']);
-        $this->_initLaunchService($config['launch'], $config['domain'], $config['universe']);
+        $this->initDataService($config['data'], $config['domain'], $config['universe']);
+        $this->initTriggerService($config['trigger'], $config['domain'], $config['universe']);
+        $this->initLaunchService($config['launch'], $config['domain'], $config['universe']);
     }
 
     /**
@@ -58,15 +58,28 @@ class Service
     }
 
     /**
+     * Assign domain and universe to config
+     *
+     * @param array $config
+     * @param string $domain
+     * @param string $universe
+     * @return array
+     */
+    private function enhanceConfig(&$config, $domain, $universe)
+    {
+        $config['domain'] = $domain;
+        $config['universe'] = $universe;
+    }
+
+    /**
      * Initialize data service.
      *
      * @param array  $config
      * @param string $domain
      */
-    protected function _initDataService($config, $domain, $universe)
+    private function initDataService($config, $domain, $universe)
     {
-        $config['domain'] = $domain;
-        $config['universe'] = $universe;
+        $this->enhanceConfig($config, $domain, $universe);
 
         $dataService = new DataService($config);
 
@@ -79,10 +92,9 @@ class Service
      * @param array  $config
      * @param string $domain
      */
-    protected function _initTriggerService($config, $domain, $universe)
+    private function initTriggerService($config, $domain, $universe)
     {
-        $config['domain'] = $domain;
-        $config['universe'] = $universe;
+        $this->enhanceConfig($config, $domain, $universe);
 
         $triggerService = new TriggerService($config);
 
@@ -95,10 +107,9 @@ class Service
      * @param array  $config
      * @param string $domain
      */
-    protected function _initLaunchService($config, $domain, $universe)
+    private function initLaunchService($config, $domain, $universe)
     {
-        $config['domain'] = $domain;
-        $config['universe'] = $universe;
+        $this->enhanceConfig($config, $domain, $universe);
 
         $launchService = new LaunchService($config);
 

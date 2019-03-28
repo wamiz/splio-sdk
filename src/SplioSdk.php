@@ -41,13 +41,13 @@ class SplioSdk
     public function __construct($config = [])
     {
         $this->config = $config;
-        $this->_initServices();
+        $this->initServices();
     }
 
     /**
      * Initialize services.
      */
-    protected function _initServices()
+    protected function initServices()
     {
         $service = new Service($this->config);
 
