@@ -19,22 +19,26 @@ class SplioSdk
      * Setting up Splio configuration.
      *
      * @param array $config {
-     * 
+     *
      * Array containing API keys to connect to Splio
-     * 
+     *
      *   @option string 'domain'    's3s.fr'
      *   @option string 'universe'  Universe provided by Splio
-     *   @option array  'data'   => array(
-     *                      'version' =>  $version | API version (1.9)
-     *                      'key'     =>  $apiKey Specify data API key
+     *   @option array  'data'          => array(
+     *                      'version'       =>  $version | API version (1.9)
+     *                      'key'           =>  $apiKey Specify data API key
+     *                      'sftp_host'     => $host
+     *                      'sftp_post'     => $post
+     *                      'sftp_username' => $username
+     *                      'sftp_password' => $password
      *                      )
-     *   @option array  'trigger'     => array(
-     *                      'version' =>  $version | API version (1.9)
-     *                      'key'     =>  $apiKey Specify trigger API key
+     *   @option array  'trigger'      => array(
+     *                      'version'       =>  $version | API version (1.9)
+     *                      'key'           =>  $apiKey Specify trigger API key
      *                      )
      *   @option array  'launch'      => array(
-     *                      'version' =>  $version | API version (1.9)
-     *                      'key'     =>  $apiKey Specify launch API key
+     *                      'version'       =>  $version | API version (1.9)
+     *                      'key'           =>  $apiKey Specify launch API key
      *                      )
      * }
      */

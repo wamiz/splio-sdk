@@ -10,6 +10,7 @@ namespace Splio\Service\Data;
 use Splio\Exception\SplioSdkException;
 use Splio\Service\AbstractService;
 use Splio\Service\Data\Contact\Contact;
+use Splio\Service\Data\Contact\ContactCollection;
 use Splio\Service\Data\CustomField\CustomFieldCollection;
 use Splio\Service\Data\EmailList\EmailListCollection;
 
@@ -19,6 +20,21 @@ class DataService extends AbstractService
     const API_FIELD_ENDPOINT = 'fields';
     const API_CONTACT_ENPOINT = 'contact';
     const API_BLACKLIST_ENPOINT = 'blacklist';
+
+    protected $dataImport;
+
+    public function __construct($config)
+    {
+        parent::__construct($config);
+
+        $this->dataImport = new DataImport(
+            $this->universe,
+            $config['sftp_host'],
+            $config['sftp_port'],
+            $config['sftp_username'],
+            $config['sftp_password']
+        );
+    }
 
     protected function getPath()
     {
@@ -176,5 +192,15 @@ class DataService extends AbstractService
         }
 
         return true;
+    }
+
+    /**
+     * Import many contacts into splio database.
+     *
+     * @param string $csvData
+     */
+    public function importContacts(ContactCollection $contacts, $name = 'default')
+    {
+        $this->dataImport->import($csvData, $name);
     }
 }

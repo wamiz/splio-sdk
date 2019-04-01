@@ -13,6 +13,10 @@
     <php>
         <env name="SPLIO_DATA_KEY" value="YOUR_SPLIO_DATA_KEY"/>
         <env name="SPLIO_DATA_VERSION" value="1.9"/>
+        <env name="SPLIO_DATA_SFTP_HOST" value="sftp.splio.com"/>
+        <env name="SPLIO_DATA_SFTP_PORT" value="22"/>
+        <env name="SPLIO_DATA_SFTP_USERNAME" value="foo"/>
+        <env name="SPLIO_DATA_SFTP_PASSWORD" value="bar"/>
         <env name="SPLIO_TRIGGER_KEY" value="YOUR_SPLIO_TRIGGER_KEY"/>
         <env name="SPLIO_TRIGGER_VERSION" value="1.9"/>
         <env name="SPLIO_LAUNCH_KEY" value="YOUR_SPLIO_LAUNCH_KEY"/>
