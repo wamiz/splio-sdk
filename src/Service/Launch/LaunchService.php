@@ -39,7 +39,7 @@ class LaunchService extends AbstractService
     {
         $options = \array_merge($this->baseQuery, $message->jsonSerialize());
 
-        $res = $this->request('?'.\http_build_query($options), 'GET');
+        $res = $this->request('?'.\http_build_query($options), 'GET', [], [], '');
 
         return \json_decode($res->getBody()->getContents());
     }
@@ -52,7 +52,7 @@ class LaunchService extends AbstractService
     protected function setEndpoint()
     {
         $this->endpoint = 'https://'.
-                          $this->baseUrl.'/'.
+                          $this->baseUrl.
                           $this->path;
     }
 }

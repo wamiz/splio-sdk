@@ -42,10 +42,10 @@ abstract class AbstractService
      * @param array  $params  | params to append in URL
      * @param array  $options
      */
-    protected function request($action, $method = 'GET', $params = [], $options = []): GuzzleResponse
+    protected function request($action, $method = 'GET', $params = [], $options = [], $separator = '/'): GuzzleResponse
     {
         $res = $this->client->request($method,
-            $this->endpoint.'/'.$action, ['body' => json_encode($params)]
+            $this->endpoint.$separator.$action, ['body' => json_encode($params)]
         );
 
         return $res;
