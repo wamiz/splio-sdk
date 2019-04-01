@@ -1,5 +1,5 @@
 {
-    "name": "crassaert/splio-sdk",
+    "name": "common/splio-sdk",
     "description": "PHP wrapper for Splio CRM and router",
     "type": "library",
     "require": {
