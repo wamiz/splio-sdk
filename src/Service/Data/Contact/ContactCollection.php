@@ -161,8 +161,8 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
             $attributes = [];
 
             foreach ($headers as $headerItem) {
-                if (\array_key_exists($headerItem, $line)) {
-                    $attributes[] = $line[$headerItem];
+                if (\array_key_exists($headerItem, $line) && $line[$headerItem] !== '') {
+                    $attributes[] = '"' . $line[$headerItem] . '"';
                 } else {
                     $attributes[] = '';
                 }

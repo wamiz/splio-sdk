@@ -13,6 +13,7 @@ class EmailList implements SplioSerializeInterface
 {
     private $id = false;
     private $name = false;
+    private $members = 0;
 
     public function getId(): int
     {
@@ -22,6 +23,11 @@ class EmailList implements SplioSerializeInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getMembers(): int
+    {
+        return $this->members;
     }
 
     /**
@@ -52,6 +58,13 @@ class EmailList implements SplioSerializeInterface
         return $this;
     }
 
+    public function setMembers(int $members): self
+    {
+        $this->members = $members;
+
+        return $this;
+    }
+
     /**
      * Return formatted data for Splio API.
      *
@@ -59,7 +72,7 @@ class EmailList implements SplioSerializeInterface
      */
     public function jsonSerialize(): array
     {
-        return \array_filter(['id' => $this->id, 'name' => $this->name],
+        return \array_filter(['id' => $this->id, 'name' => $this->name, 'members' => $this->members],
           function ($item) { return false !== $item ? true : false; });
     }
 
@@ -70,6 +83,7 @@ class EmailList implements SplioSerializeInterface
         $res = new self();
         $res->setId($data->id);
         $res->setName($data->name);
+        $res->setMembers($data->members);
 
         return $res;
     }
