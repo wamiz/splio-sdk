@@ -136,11 +136,21 @@ class Contact implements SplioSerializeInterface
         return $this;
     }
 
+    public function getCustomFields(): CustomFieldCollection
+    {
+        return $this->fields;
+    }
+
     public function addEmailList(EmailList $list): self
     {
         $this->lists->append($list);
 
         return $this;
+    }
+
+    public function getEmailList(): EmailListCollection
+    {
+        return $this->lists;
     }
 
     public function getEmail(): string
@@ -156,6 +166,21 @@ class Contact implements SplioSerializeInterface
     public function getLastname(): string
     {
         return $this->lastname;
+    }
+
+    public function getCellphone(): string
+    {
+        return $this->cellphone;
+    }
+
+    public function getLang(): string
+    {
+        return $this->lang;
+    }
+
+    public function getDate()
+    {
+        return $this->date;
     }
 
     /**

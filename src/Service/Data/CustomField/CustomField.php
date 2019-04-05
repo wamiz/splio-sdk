@@ -25,7 +25,7 @@ class CustomField implements SplioSerializeInterface
         return $this->name;
     }
 
-    public function value(): string
+    public function getValue(): string
     {
         return $this->value;
     }

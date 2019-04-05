@@ -22,6 +22,7 @@ class DataService extends AbstractService
     const API_BLACKLIST_ENPOINT = 'blacklist';
 
     protected $dataImport;
+    protected $fields;
 
     public function __construct($config)
     {
@@ -74,14 +75,18 @@ class DataService extends AbstractService
 
     public function getFields(): CustomFieldCollection
     {
-        $res = $this->request(self::API_FIELD_ENDPOINT, 'GET');
-
-        if (200 !== $res->getStatusCode()) {
-            throw new SplioSdkException('Error while fetching fields : '.
-                $res->getReasonPhrase(), $res->getStatusCode());
+        if (!$this->fields)
+        {
+            $res = $this->request(self::API_FIELD_ENDPOINT, 'GET');
+    
+            if (200 !== $res->getStatusCode()) {
+                throw new SplioSdkException('Error while fetching fields : '.
+                    $res->getReasonPhrase(), $res->getStatusCode());
+            }
+            $this->fields = $res->getBody()->getContents();
         }
 
-        return CustomFieldCollection::jsonUnserialize($res->getBody()->getContents());
+        return CustomFieldCollection::jsonUnserialize($this->fields);
     }
 
     /**
@@ -201,6 +206,6 @@ class DataService extends AbstractService
      */
     public function importContacts(ContactCollection $contacts, $name = 'default')
     {
-        $this->dataImport->import($csvData, $name);
+        $this->dataImport->import($contacts->csvSerialize(), $name);
     }
 }

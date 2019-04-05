@@ -12,6 +12,11 @@ use Splio\Serialize\SplioSerializeInterface;
 
 class ContactCollection extends \ArrayObject implements SplioSerializeInterface
 {
+    const CSV_DELIMITER = ',';
+
+    protected $csvData;
+    protected $csvHeaders;
+
     /**
      * Check if object is intance of Contact.
      *
@@ -27,6 +32,13 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
         parent::offsetSet($index, $newval);
     }
 
+    /**
+     * Retrieve contact with a given id.
+     *
+     * @param int $id
+     *
+     * @return Contact
+     */
     public function retrieveById(int $id): Contact
     {
         foreach ($this as $item) {
@@ -38,6 +50,11 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
         return false;
     }
 
+    /**
+     * Serialize collection to JSON.
+     *
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         $res = \array_map(
@@ -60,5 +77,100 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
         }
 
         return $res;
+    }
+
+    protected function retrieveCsvHeaders()
+    {
+        if (!$this->csvHeaders) {
+            $headers = [];
+
+            foreach ($this->csvData as $data) {
+                foreach ($data as $key => $value) {
+                    if (!\in_array($key, $headers)) {
+                        $headers[] = $key;
+                    }
+                }
+            }
+
+            $this->csvHeaders = $headers;
+        }
+
+        return $this->csvHeaders;
+    }
+
+    /**
+     * Serialize current contacts to CSV to use in data hub offline API.
+     *
+     * @return string $csv
+     */
+    protected function formatForCsv()
+    {
+        $csv = '';
+
+        $lines = [];
+
+        foreach ($this as $contact) {
+            $line = [
+                'email' => $contact->getEmail(),
+                'firstname' => $contact->getFirstname(),
+                'lastname' => $contact->getLastname(),
+                'cellphone' => $contact->getCellphone(),
+                'language' => $contact->getLang(),
+            ];
+
+            if ($contact->getDate() instanceof \DateTime)
+            {
+                $line['dateOfCreation'] = $contact->getDate()->format('Ymd');
+            }
+
+            // adding subscriptions
+            $subscriptions = [];
+
+            foreach ($contact->getEmailList() as $list) {
+                $subscriptions[] = '+'.$list->getId();
+            }
+
+            $line['subscriptions'] = \implode(self::CSV_DELIMITER, $subscriptions);
+
+            // adding custom fields
+            foreach ($contact->getCustomFields() as $field) {
+                $idx = 'c'.$field->getId();
+                $line[$idx] = $field->getValue();
+            }
+
+            \array_push($lines, $line);
+
+            $this->csvData = $lines;
+        }
+    }
+
+    /**
+     * Format user collection to CSV
+     *
+     * @return string
+     */
+    public function csvSerialize()
+    {
+        $this->formatForCsv();
+        $headers = $this->retrieveCsvHeaders();
+
+        // Setting headers as first line
+        $data = [\implode(self::CSV_DELIMITER, $headers)];
+
+        foreach ($this->csvData as $line) {
+            $attributes = [];
+
+            foreach ($headers as $headerItem) {
+                if (\array_key_exists($headerItem, $line)) {
+                    $attributes[] = $line[$headerItem];
+                } else {
+                    $attributes[] = '';
+                }
+            }
+
+            $data[] = \implode(self::CSV_DELIMITER, $attributes);
+        }
+
+        return \implode("\n", $data);
     }
 }
