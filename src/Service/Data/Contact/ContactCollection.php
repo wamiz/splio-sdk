@@ -130,7 +130,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
                 $subscriptions[] = '+'.$list->getId();
             }
 
-            $line['subscriptions'] = \implode(self::CSV_DELIMITER, $subscriptions);
+            $line['subscriptions'] = \implode(',', $subscriptions);
 
             // adding custom fields
             foreach ($contact->getCustomFields() as $field) {
