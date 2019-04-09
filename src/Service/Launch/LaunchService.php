@@ -33,9 +33,9 @@ class LaunchService extends AbstractService
      *
      * @param Message $message
      *
-     * @return bool
+     * @return object
      */
-    public function launchCampaign(Message $message): bool
+    public function launchCampaign(Message $message)
     {
         $options = \array_merge($this->baseQuery, $message->jsonSerialize());
 
