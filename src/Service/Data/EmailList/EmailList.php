@@ -83,7 +83,10 @@ class EmailList implements SplioSerializeInterface
         $res = new self();
         $res->setId($data->id);
         $res->setName($data->name);
-        $res->setMembers($data->members);
+
+        if ($data->members) {
+            $res->setMembers($data->members);
+        }
 
         return $res;
     }
