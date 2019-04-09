@@ -80,6 +80,6 @@ final class OfflineDataApiTest extends TestCase
     public function testBulkImport()
     {
         $this->fillUsers();
-        $this->sdk->getService()->getData()->importContacts($this->userCollection);
+        $this->sdk->getService()->getData()->importContacts($this->userCollection, 'test');
     }
 }

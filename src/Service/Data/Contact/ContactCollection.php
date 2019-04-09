@@ -12,7 +12,7 @@ use Splio\Serialize\SplioSerializeInterface;
 
 class ContactCollection extends \ArrayObject implements SplioSerializeInterface
 {
-    const CSV_DELIMITER = ',';
+    const CSV_DELIMITER = ';';
 
     protected $csvData;
     protected $csvHeaders;
