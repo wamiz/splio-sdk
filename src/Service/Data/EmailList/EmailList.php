@@ -13,6 +13,7 @@ class EmailList implements SplioSerializeInterface
 {
     private $id = false;
     private $name = false;
+    private $action = false;
     private $members = 0;
 
     public function getId(): int
@@ -58,6 +59,20 @@ class EmailList implements SplioSerializeInterface
         return $this;
     }
 
+    /**
+     * Set action (to unsubscribe someone).
+     *
+     * @param string $action
+     *
+     * @return self
+     */
+    public function setAction(string $action = 'unsubscribe')
+    {
+        $this->action = $action;
+
+        return $this;
+    }
+
     public function setMembers(int $members): self
     {
         $this->members = $members;
@@ -72,7 +87,12 @@ class EmailList implements SplioSerializeInterface
      */
     public function jsonSerialize(): array
     {
-        return \array_filter(['id' => $this->id, 'name' => $this->name, 'members' => $this->members],
+        return \array_filter([
+            'id' => $this->id,
+            'name' => $this->name,
+            'action' => $this->action,
+            'members' => $this->members,
+        ],
           function ($item) { return false !== $item ? true : false; });
     }
 
@@ -83,6 +103,10 @@ class EmailList implements SplioSerializeInterface
         $res = new self();
         $res->setId($data->id);
         $res->setName($data->name);
+
+        if ($data->action) {
+            $res->setAction($data->action);
+        }
 
         if ($data->members) {
             $res->setMembers($data->members);
