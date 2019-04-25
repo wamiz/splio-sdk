@@ -13,13 +13,14 @@
  - deleteContact
  - isContactBlacklisted
  - addContactToBlacklist
+ - importContacts
 
 #### getLists()
 Retrieve all lists from the specified universe. Returns EmailListCollection object.
 
 ----
 
-#### getContact($email)
+#### getContact(string $email)
 Retrieve all infos about the user, including custom fields and subscribed lists.
 
 ----
@@ -38,6 +39,21 @@ Update a contact, you can view contact options on example below.
 Delete a contact from email address
 
 ----
+
+#### isContactBlacklisted(string $email)
+Return true if contact is in blacklist, false on the other hand.
+
+---
+
+#### addContactToBlacklist(string $email)
+Adding specified email to blacklist.
+
+---
+
+#### importContacts(Splio\Service\Data\Contact\ContactCollection, $name)
+Adding contact collection (see Contact model) to export to Splio
+
+---
 
 ### Examples :
 
