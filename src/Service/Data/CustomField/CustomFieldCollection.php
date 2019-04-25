@@ -35,7 +35,11 @@ class CustomFieldCollection extends \ArrayObject implements SplioSerializeInterf
             }
         }
 
-        return false;
+        // if not found, return new field
+        $customField = new CustomField();
+        $customField->setId($id);
+
+        return $customField;
     }
 
     public function jsonSerialize(): array
