@@ -37,6 +37,6 @@ PHP wrapper for Splio CRM and router.
 
 ### API
 
-    - [Data API](docs/data/README.md)
-    - [Trigger API](docs/trigger/README.md)
-    - [Launch API](docs/launch/README.md)
+- [Data API](docs/data/README.md)
+- [Trigger API](docs/trigger/README.md)
+- [Launch API](docs/launch/README.md)
