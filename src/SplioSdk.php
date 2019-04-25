@@ -28,7 +28,7 @@ class SplioSdk
      *                      'version'       =>  $version | API version (1.9)
      *                      'key'           =>  $apiKey Specify data API key
      *                      'sftp_host'     => $host
-     *                      'sftp_post'     => $post
+     *                      'sftp_port'     => $port
      *                      'sftp_username' => $username
      *                      'sftp_password' => $password
      *                      )
