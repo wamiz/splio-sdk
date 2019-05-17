@@ -13,6 +13,8 @@ class Message
     private $replyTo;
     private $url;
     private $startTime;
+    private $category;
+    private $opcode;
 
     public function setSenderEmail(string $email): self
     {
@@ -49,6 +51,30 @@ class Message
         return $this;
     }
 
+    public function setCategory(string $category): self
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    public function getCategory(): string
+    {
+        return $this->category;
+    }
+
+    public function setOpcode(string $opcode): self
+    {
+        $this->opcode = $opcode;
+
+        return $this;
+    }
+
+    public function getOpcode(): string
+    {
+        return $this->opcode;
+    }
+
     public function addList(EmailList $list): self
     {
         $this->lists[] = $list;
@@ -75,6 +101,8 @@ class Message
             'sendername' => $this->senderName,
             'replyto' => $this->replyTo,
             'starttime' => $this->startTime,
+            'category' => $this->category,
+            'opcode' => $this->opcode,
             'list' => \implode(',', $lists),
             'filter' => \implode(',', $this->filters),
         ];
