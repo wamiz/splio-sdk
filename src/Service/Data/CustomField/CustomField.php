@@ -77,28 +77,28 @@ class CustomField implements SplioSerializeInterface
      */
     public function jsonSerialize()
     {
-        return \array_filter([
+        return array_filter([
             'id' => $this->id,
             'name' => $this->name,
             'value' => $this->value,
         ], function ($item) { return false !== $item ? true : false; });
     }
 
-    public static function jsonUnserialize(string $response): self
+    public static function jsonUnserialize(string $response)
     {
-        $data = \json_decode($response);
+        $data = json_decode($response);
 
         $res = new self();
 
-        if (\property_exists($data, 'id')) {
+        if (property_exists($data, 'id')) {
             $res->setId($data->id);
         }
 
-        if (\property_exists($data, 'name')) {
+        if (property_exists($data, 'name')) {
             $res->setName($data->name);
         }
 
-        if (\property_exists($data, 'value')) {
+        if (property_exists($data, 'value')) {
             $res->setValue($data->value);
         }
 

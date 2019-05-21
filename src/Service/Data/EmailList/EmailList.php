@@ -87,7 +87,7 @@ class EmailList implements SplioSerializeInterface
      */
     public function jsonSerialize(): array
     {
-        return \array_filter([
+        return array_filter([
             'id' => $this->id,
             'name' => $this->name,
             'action' => $this->action,
@@ -96,19 +96,19 @@ class EmailList implements SplioSerializeInterface
           function ($item) { return false !== $item ? true : false; });
     }
 
-    public static function jsonUnserialize(string $response): self
+    public static function jsonUnserialize(string $response)
     {
-        $data = \json_decode($response);
+        $data = json_decode($response);
 
         $res = new self();
         $res->setId($data->id);
         $res->setName($data->name);
 
-        if ($data->action) {
+        if (isset($data->action) && $data->action) {
             $res->setAction($data->action);
         }
 
-        if ($data->members) {
+        if (isset($data->members) && $data->members) {
             $res->setMembers($data->members);
         }
 

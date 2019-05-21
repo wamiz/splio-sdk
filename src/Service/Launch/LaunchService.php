@@ -37,11 +37,11 @@ class LaunchService extends AbstractService
      */
     public function launchCampaign(Message $message)
     {
-        $options = \array_merge($this->baseQuery, $message->jsonSerialize());
+        $options = array_merge($this->baseQuery, $message->jsonSerialize());
 
-        $res = $this->request('?'.\http_build_query($options), 'GET', [], [], '');
+        $res = $this->request('?'. http_build_query($options), 'GET', [], [], '');
 
-        return \json_decode($res->getBody()->getContents());
+        return json_decode($res->getBody()->getContents());
     }
 
     protected function getPath()

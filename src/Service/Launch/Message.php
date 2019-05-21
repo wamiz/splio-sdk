@@ -91,7 +91,7 @@ class Message
 
     public function jsonSerialize()
     {
-        $lists = \array_map(function ($item) {
+        $lists = array_map(function ($item) {
             return $item->getId();
         }, $this->lists);
 
@@ -103,10 +103,10 @@ class Message
             'starttime' => $this->startTime,
             'category' => $this->category,
             'opcode' => $this->opcode,
-            'list' => \implode(',', $lists),
-            'filter' => \implode(',', $this->filters),
+            'list' => implode(',', $lists),
+            'filter' => implode(',', $this->filters),
         ];
 
-        return \array_filter($data);
+        return array_filter($data);
     }
 }

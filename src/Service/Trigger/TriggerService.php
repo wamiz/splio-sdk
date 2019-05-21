@@ -34,11 +34,11 @@ class TriggerService extends AbstractService
      */
     public function send($messageId, RecipientCollection $recipients)
     {
-        $options = \array_merge($this->baseQuery, $params);
+        $options = array_merge($this->baseQuery, $params);
 
         $res = $this->request('', 'POST', $options);
 
-        return \json_decode($res->getBody()->getContents());
+        return json_decode($res->getBody()->getContents());
     }
 
     /**

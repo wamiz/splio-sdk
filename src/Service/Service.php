@@ -30,7 +30,7 @@ class Service
     /**
      * Return data service.
      *
-     * @return Splio\Service\DataService
+     * @return Splio\Service\Data\DataService
      */
     public function getData()
     {
@@ -40,7 +40,7 @@ class Service
     /**
      * Return trigger service.
      *
-     * @return Splio\Service\TriggerService
+     * @return Splio\Service\Trigger\TriggerService
      */
     public function getTrigger()
     {
@@ -50,7 +50,7 @@ class Service
     /**
      * Return launch service.
      *
-     * @return Splio\Service\LaunchService
+     * @return Splio\Service\Launch\LaunchService
      */
     public function getLaunch()
     {

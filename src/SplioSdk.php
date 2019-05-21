@@ -69,9 +69,9 @@ class SplioSdk
     }
 
     /**
-     * Get all services.
+     * Get all services
      *
-     * @return Splio\Service\Service
+     * @return Service
      */
     public function getService(): Service
     {

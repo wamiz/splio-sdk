@@ -9,8 +9,9 @@
 namespace Splio\Service\Data\CustomField;
 
 use Splio\Serialize\SplioSerializeInterface;
+use \ArrayObject, \InvalidArgumentException;
 
-class CustomFieldCollection extends \ArrayObject implements SplioSerializeInterface
+class CustomFieldCollection extends ArrayObject implements SplioSerializeInterface
 {
     /**
      * Check if object is intance of CustomField.
@@ -21,7 +22,7 @@ class CustomFieldCollection extends \ArrayObject implements SplioSerializeInterf
     public function offsetSet($index, $newval)
     {
         if (!($newval instanceof CustomField)) {
-            throw new \InvalidArgumentException('Must be CustomField class');
+            throw new InvalidArgumentException('Must be CustomField class');
         }
 
         parent::offsetSet($index, $newval);
@@ -44,7 +45,7 @@ class CustomFieldCollection extends \ArrayObject implements SplioSerializeInterf
 
     public function jsonSerialize(): array
     {
-        $res = \array_map(
+        $res = array_map(
             function ($item) {
                 return $item->jsonSerialize();
             }, $this->getArrayCopy()
@@ -53,9 +54,9 @@ class CustomFieldCollection extends \ArrayObject implements SplioSerializeInterf
         return $res;
     }
 
-    public static function jsonUnserialize(string $response): self
+    public static function jsonUnserialize(string $response)
     {
-        $data = \json_decode($response);
+        $data = json_decode($response);
 
         $res = new self();
 

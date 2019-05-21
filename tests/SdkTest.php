@@ -25,6 +25,6 @@ final class SdkTest extends TestCase
     {
         $sdk = new SplioSdk($this->buildConfig());
 
-        $this->assertTrue(\is_object($sdk) && $sdk instanceof SplioSdk);
+        $this->assertTrue(is_object($sdk) && $sdk instanceof SplioSdk);
     }
 }

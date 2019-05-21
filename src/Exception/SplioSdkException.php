@@ -7,7 +7,9 @@
 
 namespace Splio\Exception;
 
-class SplioSdkException extends \Exception
+use \Exception;
+
+class SplioSdkException extends Exception
 {
     public function __construct($message, $code = 0, Exception $previous = null)
     {
@@ -16,6 +18,6 @@ class SplioSdkException extends \Exception
 
     public function __toString()
     {
-        return __CLASS__.": [{$this->code}]: {$this->message}\n";
+        return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
 }

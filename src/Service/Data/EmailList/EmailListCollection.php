@@ -9,8 +9,9 @@
 namespace Splio\Service\Data\EmailList;
 
 use Splio\Serialize\SplioSerializeInterface;
+use \ArrayObject, \InvalidArgumentException;
 
-class EmailListCollection extends \ArrayObject implements SplioSerializeInterface
+class EmailListCollection extends ArrayObject implements SplioSerializeInterface
 {
     /**
      * Check if value is EmailList instance.
@@ -21,22 +22,29 @@ class EmailListCollection extends \ArrayObject implements SplioSerializeInterfac
     public function offsetSet($index, $newval)
     {
         if (!($newval instanceof EmailList)) {
-            throw new \InvalidArgumentException('Must be EmailList class');
+            throw new InvalidArgumentException('Must be EmailList class');
         }
 
         parent::offsetSet($index, $newval);
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
-        return \array_map(
+        return array_map(
             function ($item) {
                 return $item->jsonSerialize();
             }, $this->getArrayCopy()
         );
     }
 
-    public function retrieveById(int $id): EmailList
+    /**
+     * @param int $id
+     * @return EmailList|boolean
+     */
+    public function retrieveById(int $id)
     {
         foreach ($this as $item) {
             if ($item->getId() == $id) {
@@ -47,9 +55,13 @@ class EmailListCollection extends \ArrayObject implements SplioSerializeInterfac
         return false;
     }
 
-    public static function jsonUnserialize(string $response): self
+    /**
+     * @param string $response
+     * @return EmailListCollection
+     */
+    public static function jsonUnserialize(string $response)
     {
-        $data = \json_decode($response);
+        $data = json_decode($response);
 
         $res = new self();
 

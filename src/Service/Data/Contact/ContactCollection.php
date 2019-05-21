@@ -9,8 +9,9 @@
 namespace Splio\Service\Data\Contact;
 
 use Splio\Serialize\SplioSerializeInterface;
+use \ArrayObject, \InvalidArgumentException, \DateTime;
 
-class ContactCollection extends \ArrayObject implements SplioSerializeInterface
+class ContactCollection extends ArrayObject implements SplioSerializeInterface
 {
     const CSV_DELIMITER = ';';
 
@@ -26,7 +27,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
     public function offsetSet($index, $newval)
     {
         if (!($newval instanceof Contact)) {
-            throw new \InvalidArgumentException('Must be Contact class');
+            throw new InvalidArgumentException('Must be Contact class');
         }
 
         parent::offsetSet($index, $newval);
@@ -39,7 +40,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
      *
      * @return Contact
      */
-    public function retrieveById(int $id): Contact
+    public function retrieveById(int $id)
     {
         foreach ($this as $item) {
             if ($item->getId() == $id) {
@@ -57,7 +58,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
      */
     public function jsonSerialize(): array
     {
-        $res = \array_map(
+        $res = array_map(
             function ($item) {
                 return $item->jsonSerialize();
             }, $this->getArrayCopy()
@@ -66,9 +67,9 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
         return $res;
     }
 
-    public static function jsonUnserialize(string $response): self
+    public static function jsonUnserialize(string $response)
     {
-        $data = \json_decode($response);
+        $data = json_decode($response);
 
         $res = new self();
 
@@ -79,6 +80,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
         return $res;
     }
 
+
     protected function retrieveCsvHeaders()
     {
         if (!$this->csvHeaders) {
@@ -86,7 +88,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
 
             foreach ($this->csvData as $data) {
                 foreach ($data as $key => $value) {
-                    if (!\in_array($key, $headers)) {
+                    if (!in_array($key, $headers)) {
                         $headers[] = $key;
                     }
                 }
@@ -105,7 +107,6 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
      */
     protected function formatForCsv()
     {
-        $csv = '';
 
         $lines = [];
 
@@ -118,7 +119,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
                 'language' => $contact->getLang(),
             ];
 
-            if ($contact->getDate() instanceof \DateTime)
+            if ($contact->getDate() instanceof DateTime)
             {
                 $line['dateOfCreation'] = $contact->getDate()->format('Ymd');
             }
@@ -130,7 +131,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
                 $subscriptions[] = '+'.$list->getId();
             }
 
-            $line['subscriptions'] = \implode(',', $subscriptions);
+            $line['subscriptions'] = implode(',', $subscriptions);
 
             // adding custom fields
             foreach ($contact->getCustomFields() as $field) {
@@ -138,7 +139,7 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
                 $line[$idx] = $field->getValue();
             }
 
-            \array_push($lines, $line);
+            array_push($lines, $line);
 
             $this->csvData = $lines;
         }
@@ -155,22 +156,22 @@ class ContactCollection extends \ArrayObject implements SplioSerializeInterface
         $headers = $this->retrieveCsvHeaders();
 
         // Setting headers as first line
-        $data = [\implode(self::CSV_DELIMITER, $headers)];
+        $data = [implode(self::CSV_DELIMITER, $headers)];
 
         foreach ($this->csvData as $line) {
             $attributes = [];
 
             foreach ($headers as $headerItem) {
-                if (\array_key_exists($headerItem, $line) && $line[$headerItem] !== '') {
+                if (array_key_exists($headerItem, $line) && $line[$headerItem] !== '') {
                     $attributes[] = '"' . $line[$headerItem] . '"';
                 } else {
                     $attributes[] = '';
                 }
             }
 
-            $data[] = \implode(self::CSV_DELIMITER, $attributes);
+            $data[] = implode(self::CSV_DELIMITER, $attributes);
         }
 
-        return \implode("\n", $data);
+        return implode("\n", $data);
     }
 }

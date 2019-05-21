@@ -52,7 +52,7 @@ final class DataApiTest extends TestCase
             $ids[] = $list->getId();
         }
 
-        $randomId = \array_rand($ids);
+        $randomId = array_rand($ids);
 
         $list = $lists->retrieveById($randomId);
 
@@ -71,7 +71,7 @@ final class DataApiTest extends TestCase
             $ids[] = $field->getId();
         }
 
-        $randomId = \array_rand($ids);
+        $randomId = array_rand($ids);
 
         $field = $fields->retrieveById($randomId);
 

@@ -14,9 +14,9 @@ class Recipient
      * Set recipient email
      *
      * @param string $email
-     * @return App\Service\Trigger\Recipient
+     * @return Recipient
      */
-    public function setEmail($email)
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -27,9 +27,9 @@ class Recipient
      * Set recipient fistname
      *
      * @param string $firstname
-     * @return App\Service\Trigger\Recipient
+     * @return Recipient
      */
-    public function setFirstname($firstname)
+    public function setFirstname($firstname): self
     {
         $this->firstname = $firstname;
 
@@ -40,11 +40,11 @@ class Recipient
      * Set recipient lastname
      *
      * @param string $lastname
-     * @return App\Service\Trigger\Recipient
+     * @return Recipient
      */
-    public function setLastname($lastname)
+    public function setLastname($lastname): self
     {
-        $this->lastname = $email;
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -53,9 +53,9 @@ class Recipient
      * Set recipient cellphone
      *
      * @param string $cellphone
-     * @return App\Service\Trigger\Recipient
+     * @return Recipient
      */
-    public function setCellphone($cellphone)
+    public function setCellphone($cellphone): self
     {
         $this->cellphone = $cellphone;
 
@@ -66,15 +66,15 @@ class Recipient
      * Add custom field data to recipient
      *
      * @param integer $customFieldId
-     * @param string $value
-     * 
-     * @return App\Service\Trigger\Recipient
+     * @param string $customFieldValue
+     *
+     * @return Recipient
      */
-    public function addCustomField($customFieldId, $customFieldValue)
+    public function addCustomField($customFieldId, $customFieldValue): self
     {
         $custom = ['field_id' => $customFieldId, 'field_value' => $customFieldValue];
 
-        \array_push($this->custom, $custom);
+        array_push($this->custom, $custom);
 
         return $this;
     }
@@ -88,8 +88,7 @@ class Recipient
     {
         $cf = [];
 
-        foreach ($this->custom as $custom)
-        {
+        foreach ($this->custom as $custom) {
             $key = 'c' . $custom['field_id'];
 
             $cf[$key] = $custom['field_value'];
@@ -102,6 +101,6 @@ class Recipient
             'email' => $this->email,
         ];
 
-        return \array_merge($data, $cf);
+        return array_merge($data, $cf);
     }
 }

@@ -8,6 +8,7 @@
 namespace Splio\Tests;
 
 use PHPUnit\Framework\TestCase;
+use \DateTime;
 use Splio\Service\Data\Contact\Contact;
 use Splio\Service\Data\Contact\ContactCollection;
 use Splio\SplioSdk;
@@ -52,7 +53,7 @@ final class OfflineDataApiTest extends TestCase
             $contact->setFirstname('Foo'.$i);
             $contact->setLastname('Bar'.$i);
             $contact->setLang('fr');
-            $contact->setDate(new \DateTime());
+            $contact->setDate(new DateTime());
 
             foreach ($this->sdk->getService()->getData()->getFields() as $field)
             {

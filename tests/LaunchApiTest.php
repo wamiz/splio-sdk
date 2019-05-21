@@ -8,6 +8,7 @@
 namespace Splio\Tests;
 
 use PHPUnit\Framework\TestCase;
+use \DateTime;
 use Splio\Service\Launch\Message as SplioMessage;
 use Splio\SplioSdk;
 use Splio\Tests\Config\SplioConfig;
@@ -34,7 +35,7 @@ final class LaunchApiTest extends TestCase
         $selectedList = false;
 
         foreach ($lists as $list) {
-            if (\preg_match('/dev/Uis', $list->getName())) {
+            if (preg_match('/dev/Uis', $list->getName())) {
                 $selectedList = $list;
             }
         }
@@ -44,7 +45,7 @@ final class LaunchApiTest extends TestCase
             return false;
         }
 
-        $sendDate = new \DateTime;
+        $sendDate = new DateTime;
 
         $message = new SplioMessage();
         $message->setSenderName('Foo');
