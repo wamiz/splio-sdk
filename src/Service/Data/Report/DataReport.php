@@ -44,10 +44,9 @@ class DataReport extends AbstractFtpConnect
         $collection = new ContactReportCollection();
         $i = 0;
 
-        while (FALSE !== ($line = fgetcsv($stream, 4096, ";"))) {
-            if ($i > 0) {
+        while (false !== ($line = fgetcsv($stream, 4096, ";"))) {
+            if ($i > 0 && !empty($line[2])) {
                 $item = $this->csvToContactReport($line, $lists);
-
                 $collection->append($item);
             }
 
@@ -96,12 +95,16 @@ class DataReport extends AbstractFtpConnect
      */
     private function formatLists(string $contactLists, EmailListCollection $lists)
     {
-        $elements = explode(',', $contactLists);
-
         $collection = new EmailListCollection();
 
+        if (empty($contactLists)) {
+            return $collection;
+        }
+
+        $elements = explode(',', $contactLists);
+
         foreach ($elements as $list) {
-            $listObj = $lists->retrieveById($list);
+            $listObj = $lists->retrieveById((int) $list);
             $collection->append($listObj);
         }
 
