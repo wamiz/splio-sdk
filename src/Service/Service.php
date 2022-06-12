@@ -7,6 +7,9 @@
 
 namespace Splio\Service;
 
+use Http\Discovery\HttpClientDiscovery;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Splio\Service\Data\DataService;
 use Splio\Service\Launch\LaunchService;
 use Splio\Service\Trigger\TriggerService;
@@ -17,10 +20,16 @@ class Service
     protected $trigger;
     protected $launch;
     protected $config;
+    /** @var ClientInterface  */
+    private $httpClient;
+    /** @var ServerRequestFactoryInterface  */
+    private $serverRequestFactory;
 
-    public function __construct($config)
+    public function __construct($config, ClientInterface $httpClient, ServerRequestFactoryInterface $serverRequestFactory)
     {
         $this->config = $config;
+        $this->httpClient = $httpClient;
+        $this->serverRequestFactory = $serverRequestFactory;
 
         $this->initDataService($config['data'], $config['domain'], $config['universe']);
         $this->initTriggerService($config['trigger'], $config['domain'], $config['universe']);
@@ -81,7 +90,7 @@ class Service
     {
         $this->enhanceConfig($config, $domain, $universe);
 
-        $dataService = new DataService($config);
+        $dataService = new DataService($config, $this->httpClient, $this->serverRequestFactory);
 
         $this->data = $dataService;
     }
@@ -96,7 +105,7 @@ class Service
     {
         $this->enhanceConfig($config, $domain, $universe);
 
-        $triggerService = new TriggerService($config);
+        $triggerService = new TriggerService($config, $this->httpClient, $this->serverRequestFactory);
 
         $this->trigger = $triggerService;
     }
@@ -111,7 +120,7 @@ class Service
     {
         $this->enhanceConfig($config, $domain, $universe);
 
-        $launchService = new LaunchService($config);
+        $launchService = new LaunchService($config, $this->httpClient, $this->serverRequestFactory);
 
         $this->launch = $launchService;
     }

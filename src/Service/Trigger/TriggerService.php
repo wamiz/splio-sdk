@@ -2,6 +2,9 @@
 
 namespace Splio\Service\Trigger;
 
+use Http\Message\RequestFactory;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Splio\Service\AbstractService;
 use Splio\Service\Trigger\Recipient\RecipientCollection;
 
@@ -14,9 +17,9 @@ class TriggerService extends AbstractService
      *
      * @param array $config
      */
-    public function __construct($config)
+    public function __construct($config, ClientInterface $httpClient, ServerRequestFactoryInterface $serverRequestFactory)
     {
-        parent::__construct($config);
+        parent::__construct($config, $httpClient, $serverRequestFactory);
 
         $this->baseQuery = [
             'universe' => $this->universe,

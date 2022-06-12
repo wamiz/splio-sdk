@@ -7,6 +7,8 @@
 
 namespace Splio\Service\Launch;
 
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Splio\Service\AbstractService;
 
 class LaunchService extends AbstractService
@@ -18,9 +20,9 @@ class LaunchService extends AbstractService
      *
      * @param array $config
      */
-    public function __construct($config)
+    public function __construct($config, ClientInterface $httpClient, ServerRequestFactoryInterface $serverRequestFactory)
     {
-        parent::__construct($config);
+        parent::__construct($config, $httpClient, $serverRequestFactory);
 
         $this->baseQuery = [
             'universe' => $this->universe,
