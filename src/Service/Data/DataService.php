@@ -7,6 +7,8 @@
 
 namespace Splio\Service\Data;
 
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Splio\Exception\SplioSdkException;
 use Splio\Service\AbstractService;
 use Splio\Service\Data\Contact\Contact;
@@ -27,9 +29,9 @@ class DataService extends AbstractService
     protected $dataReport;
     protected $fields;
 
-    public function __construct($config)
+    public function __construct($config, ClientInterface $httpClient, ServerRequestFactoryInterface $serverRequestFactory)
     {
-        parent::__construct($config);
+        parent::__construct($config, $httpClient, $serverRequestFactory);
 
         $this->dataImport = new DataImport(
             $this->universe,

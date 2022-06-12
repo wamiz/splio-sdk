@@ -5,9 +5,10 @@
 
 namespace Splio\Service;
 
-use GuzzleHttp\Client as HttpClient;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use Http\Message\RequestFactory;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Splio\Exception\SplioSdkException;
 
 abstract class AbstractService
@@ -18,20 +19,24 @@ abstract class AbstractService
     protected $path;
     protected $key;
     protected $endpoint;
-    protected $client;
+    /** @var ClientInterface */
+    private $httpClient;
+    /** @var ServerRequestFactoryInterface */
+    private $serverRequestFactory;
 
     abstract protected function getPath();
 
     abstract protected function setEndpoint();
 
-    public function __construct($config)
+    public function __construct($config, ClientInterface $httpClient, ServerRequestFactoryInterface $serverRequestFactory)
     {
         $this->baseUrl = $config['domain'];
         $this->version = $config['version'];
         $this->key = $config['key'];
         $this->universe = $config['universe'];
         $this->path = $this->getPath();
-        $this->client = new HttpClient();
+        $this->httpClient = $httpClient;
+        $this->serverRequestFactory = $serverRequestFactory;
 
         $this->setEndpoint();
     }
@@ -44,15 +49,13 @@ abstract class AbstractService
      * @param array $params | params to append in URL
      * @param array $options
      * @param string $separator
-     * @return GuzzleResponse
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Psr\Http\Client\ClientExceptionInterface
      */
-    protected function request($action, $method = 'GET', $params = [], $options = [], $separator = '/'): GuzzleResponse
+    protected function request($action, $method = 'GET', $params = [], $options = [], $separator = '/'): ResponseInterface
     {
-        $res = $this->client->request($method,
-            $this->endpoint . $separator . $action, ['body' => json_encode($params)]
-        );
+        $request = $this->serverRequestFactory->createServerRequest($method, $this->endpoint.$separator.$action);
+        $request->withParsedBody($params);
 
-        return $res;
+        return $this->httpClient->sendRequest($request);
     }
 }

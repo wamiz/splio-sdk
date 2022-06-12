@@ -5,7 +5,7 @@ PHP wrapper for Splio CRM and router.
 
 ## Installation
 
-    composer config repositories.splio-sdk vcs https://forge.wamiz.com/common/splio-sdk.git
+    composer config repositories.splio-sdk vcs https://github.com/wamiz/splio-sdk.git
     composer require common/splio-sdk:master
 
 ## Usage

@@ -3,9 +3,18 @@
   "description": "PHP wrapper for Splio CRM and router",
   "type": "library",
   "require": {
-    "guzzlehttp/guzzle": "^6.3",
     "ext-ftp": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "psr/http-client-implementation": "^1.0",
+    "psr/http-factory": "^1.0",
+    "php-http/httplug": "^2.0",
+    "php-http/message-factory": "^1.0",
+    "php-http/discovery": "^1.0"
+  },
+  "require-dev": {
+    "guzzlehttp/guzzle": "^6.5",
+    "phpunit/phpunit": "^8",
+    "php-http/guzzle6-adapter": "^2.0"
   },
   "autoload": {
     "psr-4": {
@@ -22,8 +31,5 @@
       "name": "Cédric Rassaert",
       "email": "crassaert@wamiz.com"
     }
-  ],
-  "require-dev": {
-    "phpunit/phpunit": "^8"
-  }
+  ]
 }
