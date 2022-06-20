@@ -5,10 +5,11 @@
 
 namespace Splio\Service;
 
-use Http\Message\RequestFactory;
+use Http\Message\requestFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Splio\Exception\SplioSdkException;
 
 abstract class AbstractService
@@ -21,14 +22,16 @@ abstract class AbstractService
     protected $endpoint;
     /** @var ClientInterface */
     private $httpClient;
-    /** @var ServerRequestFactoryInterface */
-    private $serverRequestFactory;
+    /** @var RequestFactoryInterface */
+    private $requestFactory;
+    /** @var StreamFactoryInterface */
+    private $streamFactory;
 
     abstract protected function getPath();
 
     abstract protected function setEndpoint();
 
-    public function __construct($config, ClientInterface $httpClient, ServerRequestFactoryInterface $serverRequestFactory)
+    public function __construct($config, ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory)
     {
         $this->baseUrl = $config['domain'];
         $this->version = $config['version'];
@@ -36,7 +39,8 @@ abstract class AbstractService
         $this->universe = $config['universe'];
         $this->path = $this->getPath();
         $this->httpClient = $httpClient;
-        $this->serverRequestFactory = $serverRequestFactory;
+        $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
 
         $this->setEndpoint();
     }
@@ -53,8 +57,8 @@ abstract class AbstractService
      */
     protected function request($action, $method = 'GET', $params = [], $options = [], $separator = '/'): ResponseInterface
     {
-        $request = $this->serverRequestFactory->createServerRequest($method, $this->endpoint.$separator.$action);
-        $request->withParsedBody($params);
+        $request = $this->requestFactory->createRequest($method, $this->endpoint.$separator.$action);
+        $request = $request->withBody($this->streamFactory->createStream(json_encode($params)));
 
         return $this->httpClient->sendRequest($request);
     }
