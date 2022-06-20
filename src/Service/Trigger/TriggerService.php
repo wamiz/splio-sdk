@@ -2,7 +2,7 @@
 
 namespace Splio\Service\Trigger;
 
-use Http\Message\requestFactory;
+use Http\Message\RequestFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
