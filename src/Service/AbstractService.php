@@ -5,7 +5,7 @@
 
 namespace Splio\Service;
 
-use Http\Message\requestFactory;
+use Http\Message\RequestFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\RequestFactoryInterface;
