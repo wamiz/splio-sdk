@@ -9,7 +9,8 @@ namespace Splio\Service;
 
 use Http\Discovery\HttpClientDiscovery;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Splio\Service\Data\DataService;
 use Splio\Service\Launch\LaunchService;
 use Splio\Service\Trigger\TriggerService;
@@ -22,14 +23,17 @@ class Service
     protected $config;
     /** @var ClientInterface  */
     private $httpClient;
-    /** @var ServerRequestFactoryInterface  */
-    private $serverRequestFactory;
+    /** @var RequestFactoryInterface  */
+    private $requestFactory;
+    /** @var StreamFactoryInterface */
+    private $streamFactory;
 
-    public function __construct($config, ClientInterface $httpClient, ServerRequestFactoryInterface $serverRequestFactory)
+    public function __construct($config, ClientInterface $httpClient, RequestFactoryInterface $requestFactory, StreamFactoryInterface $streamFactory)
     {
         $this->config = $config;
         $this->httpClient = $httpClient;
-        $this->serverRequestFactory = $serverRequestFactory;
+        $this->requestFactory = $requestFactory;
+        $this->streamFactory = $streamFactory;
 
         $this->initDataService($config['data'], $config['domain'], $config['universe']);
         $this->initTriggerService($config['trigger'], $config['domain'], $config['universe']);
@@ -90,7 +94,7 @@ class Service
     {
         $this->enhanceConfig($config, $domain, $universe);
 
-        $dataService = new DataService($config, $this->httpClient, $this->serverRequestFactory);
+        $dataService = new DataService($config, $this->httpClient, $this->requestFactory, $this->streamFactory);
 
         $this->data = $dataService;
     }
@@ -105,7 +109,7 @@ class Service
     {
         $this->enhanceConfig($config, $domain, $universe);
 
-        $triggerService = new TriggerService($config, $this->httpClient, $this->serverRequestFactory);
+        $triggerService = new TriggerService($config, $this->httpClient, $this->requestFactory, $this->streamFactory);
 
         $this->trigger = $triggerService;
     }
@@ -120,7 +124,7 @@ class Service
     {
         $this->enhanceConfig($config, $domain, $universe);
 
-        $launchService = new LaunchService($config, $this->httpClient, $this->serverRequestFactory);
+        $launchService = new LaunchService($config, $this->httpClient, $this->requestFactory, $this->streamFactory);
 
         $this->launch = $launchService;
     }
