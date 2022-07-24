@@ -25,6 +25,12 @@ Retrieve all infos about the user, including custom fields and subscribed lists.
 
 ----
 
+#### getContacts(array $filters)
+Retrieve contacts (see https://developer.splio.com/#get_data_contacts for available fields).
+If no filters are provided, all contacts are returned.
+
+----
+
 #### createContact(Splio\Service\Data\Contact\Contact $contact)
 Create a contact, see example below
 

@@ -26,6 +26,18 @@ class DataService extends AbstractService
     const API_CONTACT_ENDPOINT = 'contact';
     const API_BLACKLIST_ENDPOINT = 'blacklist';
 
+    const OPERATOR_IS = 'is';
+    const OPERATOR_AFTER = 'after';
+    const OPERATOR_BEFORE = 'before';
+    const OPERATOR_CONTAINS = 'contains';
+    const OPERATOR_ENDS = 'ends';
+    const OPERATOR_EQUAL = 'equal';
+    const OPERATOR_GREATER = 'greater';
+    const OPERATOR_IS_NOT = 'is_not';
+    const OPERATOR_LOWER = 'lower';
+    const OPERATOR_NOT_EQUAL = 'not_equal';
+    const OPERATOR_STARTS = 'starts';
+
     protected $dataImport;
     protected $dataReport;
     protected $fields;
@@ -178,7 +190,7 @@ class DataService extends AbstractService
         $res = $this->request(self::API_CONTACT_ENDPOINT . '/' . $email, 'GET');
 
         if (400 <= $res->getStatusCode()) {
-            throw new SplioSdkException('Error while updating contact : ' . $res->getReasonPhrase(), $res->getStatusCode());
+            throw new SplioSdkException('Error while getting contact : ' . $res->getReasonPhrase(), $res->getStatusCode());
         }
 
         return Contact::jsonUnserialize($res->getBody()->getContents());
@@ -240,5 +252,29 @@ class DataService extends AbstractService
         }
 
         return $this->dataReport->getReport($date, $this->getLists());
+    }
+
+    /**
+     * @param int<1, max> $page
+     * @param int<1, max> $itemsPerPage
+     * @param list<array{key: 'key'|'firstname'|'lastname'|'creation_date'|'language'|'email'|'cellphone'|'card code', operator: self::OPERATOR_*, value: int|string}> $fields
+     *
+     * @return ContactCollection
+     * @throws SplioSdkException
+     */
+    public function getContacts(int $page = 1, int $itemsPerPage = 20, array $fields = []): ContactCollection
+    {
+        $res = $this->request(self::API_CONTACT_ENDPOINT, 'GET', [
+            'per_page' => $itemsPerPage,
+            'page_number' => $page,
+            'fields' => $fields,
+        ]);
+
+        if (200 !== $res->getStatusCode()) {
+            throw new SplioSdkException('Error while fetching contacts list : ' .
+                $res->getReasonPhrase(), $res->getStatusCode());
+        }
+
+        return ContactCollection::jsonUnserialize($res->getBody()->getContents());
     }
 }
