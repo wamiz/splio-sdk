@@ -13,4 +13,16 @@ class RecipientCollection extends ArrayObject
 
         parent::offsetSet($index, $newval);
     }
+
+    public function jsonSerializer()
+    {
+        $datas = [];
+        /** @var Recipient $recipient */
+        foreach ($this->getArrayCopy() as $recipient)
+        {
+            $datas[] = $recipient->getFormattedData();
+        }
+
+        return \json_encode($datas);
+    }
 }

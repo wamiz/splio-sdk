@@ -58,7 +58,7 @@ abstract class AbstractService
     protected function request($action, $method = 'GET', $params = [], $options = [], $separator = '/'): ResponseInterface
     {
         $request = $this->requestFactory->createRequest($method, $this->endpoint.$separator.$action);
-        $request = $request->withBody($this->streamFactory->createStream(json_encode($params)));
+        $request = $request->withBody($this->streamFactory->createStream(http_build_query($params)));
 
         return $this->httpClient->sendRequest($request);
     }

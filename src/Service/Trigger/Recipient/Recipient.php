@@ -82,7 +82,7 @@ class Recipient
     /**
      * Set data to send to trigger API
      *
-     * @return void
+     * @return array<string, mixed>
      */
     public function getFormattedData()
     {

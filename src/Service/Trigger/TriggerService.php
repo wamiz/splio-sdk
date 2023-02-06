@@ -38,6 +38,8 @@ class TriggerService extends AbstractService
      */
     public function send($messageId, RecipientCollection $recipients)
     {
+        $params['message'] = $messageId;
+        $params['rcpts'] = $recipients->jsonSerializer();
         $options = array_merge($this->baseQuery, $params);
 
         $res = $this->request('', 'POST', $options);
@@ -52,7 +54,7 @@ class TriggerService extends AbstractService
      */
     protected function getPath()
     {
-        return '/api/trigger/nph-9.pl';
+        return 'api/trigger/nph-9.pl';
     }
 
     protected function setEndpoint()
