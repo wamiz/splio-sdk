@@ -84,7 +84,7 @@ class Recipient
      *
      * @return array<string, mixed>
      */
-    public function getFormattedData()
+    public function getFormattedData(): array
     {
         $cf = [];
 

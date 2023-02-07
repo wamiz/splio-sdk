@@ -31,15 +31,15 @@ class TriggerService extends AbstractService
     /**
      * Send a trigger request to specified users
      *
-     * @param integer $messageId SPRING Contact message id
+     * @param string $messageId SPRING Contact message id
      * @param RecipientCollection $recipients List of target recipients
      * 
-     * @return array
+     * @return string
      */
-    public function send($messageId, RecipientCollection $recipients)
+    public function send($messageId, RecipientCollection $recipients): string
     {
         $params['message'] = $messageId;
-        $params['rcpts'] = $recipients->jsonSerializer();
+        $params['rcpts'] = $recipients->jsonSerialize();
         $options = array_merge($this->baseQuery, $params);
 
         $res = $this->request('', 'POST', $options);
@@ -52,12 +52,12 @@ class TriggerService extends AbstractService
      *
      * @return string
      */
-    protected function getPath()
+    protected function getPath(): string
     {
         return 'api/trigger/nph-9.pl';
     }
 
-    protected function setEndpoint()
+    protected function setEndpoint(): void
     {
         $this->endpoint = 'https://'.
                           $this->baseUrl.'/'.
