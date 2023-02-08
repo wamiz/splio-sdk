@@ -2,10 +2,10 @@
 
 namespace Splio\Service\Trigger;
 
-use Http\Message\RequestFactory;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Splio\Exception\SplioSdkException;
 use Splio\Service\AbstractService;
 use Splio\Service\Trigger\Recipient\RecipientCollection;
 
@@ -33,10 +33,10 @@ class TriggerService extends AbstractService
      *
      * @param string $messageId SPRING Contact message id
      * @param RecipientCollection $recipients List of target recipients
-     * 
-     * @return string
+     * @return array<string, mixed>
+     * @throws SplioSdkException if status code != 200
      */
-    public function send($messageId, RecipientCollection $recipients): string
+    public function send(string $messageId, RecipientCollection $recipients): array
     {
         $params['message'] = $messageId;
         $params['rcpts'] = $recipients->jsonSerialize();
@@ -44,7 +44,11 @@ class TriggerService extends AbstractService
 
         $res = $this->request('', 'POST', $options);
 
-        return json_decode($res->getBody()->getContents());
+        if(200 !== $res->getStatusCode()){
+            throw new SplioSdkException("Error while send Trigger, status code {$res->getStatusCode()} with message : {$res->getReasonPhrase()}");
+        }
+
+        return json_decode($res->getBody()->getContents(), true);
     }
 
     /**
