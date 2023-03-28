@@ -17,8 +17,11 @@ use Splio\Service\Service;
 
 class SplioSdk
 {
-    protected $config;
-    protected $services;
+    protected array $config;
+    protected ?Service $service = null;
+    private ClientInterface $httpClient;
+    private RequestFactoryInterface $requestFactory;
+    private StreamFactoryInterface $streamFactory;
 
     /**
      * Setting up Splio configuration.
@@ -47,24 +50,12 @@ class SplioSdk
      *                      )
      * }
      */
-    public function __construct($config = [], ?ClientInterface $httpClient = null, ?RequestFactoryInterface $requestFactory = null, ?StreamFactoryInterface $streamFactory = null)
+    public function __construct(array $config = [], ?ClientInterface $httpClient = null, ?RequestFactoryInterface $requestFactory = null, ?StreamFactoryInterface $streamFactory = null)
     {
         $this->config = $config;
-        $this->initServices(
-            $httpClient ?: HttpClientDiscovery::find(),
-            $requestFactory ?: Psr17FactoryDiscovery::findRequestFactory(),
-            $streamFactory ?: Psr17FactoryDiscovery::findStreamFactory()
-        );
-    }
-
-    /**
-     * Initialize services.
-     */
-    protected function initServices(ClientInterface $httpClient, RequestFactoryInterface $requestFactoryInterface, StreamFactoryInterface $streamFactory)
-    {
-        $service = new Service($this->config, $httpClient, $requestFactoryInterface, $streamFactory);
-
-        $this->service = $service;
+        $this->httpClient = $httpClient ?: HttpClientDiscovery::find();
+        $this->requestFactory = $requestFactory ?: Psr17FactoryDiscovery::findRequestFactory();
+        $this->streamFactory = $streamFactory ?: Psr17FactoryDiscovery::findStreamFactory();
     }
 
     /**
@@ -84,6 +75,6 @@ class SplioSdk
      */
     public function getService(): Service
     {
-        return $this->service;
+        return $this->service ??= new Service($this->config, $this->httpClient, $this->requestFactory, $this->streamFactory);
     }
 }

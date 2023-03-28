@@ -3,6 +3,7 @@
   "description": "PHP wrapper for Splio CRM and router",
   "type": "library",
   "require": {
+    "php": ">=7.4.0",
     "ext-ftp": "*",
     "ext-json": "*",
     "psr/http-client-implementation": "^1.0",
